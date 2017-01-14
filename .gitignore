@@ -2,7 +2,7 @@ build/
 dist/
 sysProps.xml
 .classpath
-bin/org
+bin/
 bin/*
 *.class
 *.classpath
