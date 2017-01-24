@@ -45,5 +45,15 @@ public class GearCarrier extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     }
+    
+    public void deployGear()
+    {
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kForward);
+    }
+    
+    public void retractGear()
+    {
+    	doubleSolenoid1.set(DoubleSolenoid.Value.kReverse);
+    }
 }
 
