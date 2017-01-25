@@ -82,29 +82,53 @@ public class RobotMap {
         
         frontLeftMotor = new CANTalon(4);
 //        frontLeftMotor.setInverted(true);
-//        frontLeftMotor.reverseSensor(true);
-//        profile for velocity
+        frontLeftMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+        frontLeftMotor.reverseSensor(true);
+//      profile for velocity
         frontLeftMotor.setProfile(0);
-        frontLeftMotor.setPID(0.01, 0, 0);
+        frontLeftMotor.setF(0.37);
+        frontLeftMotor.setP(0.1);
+        frontLeftMotor.setI(0);
+        frontLeftMotor.setD(1);
 //      profile for position
-        frontLeftMotor.setProfile(1);
-        frontLeftMotor.setPID(1, 0, 0);
+//        frontLeftMotor.setProfile(1);
+//        frontLeftMotor.setPID(0, 0, 0);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 1", frontLeftMotor);
 
         rearLeftMotor = new CANTalon(1);
+        rearLeftMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
         rearLeftMotor.reverseSensor(true);
 //        rearLeftMotor.setInverted(true);
-        rearLeftMotor.setPID(0, 0, 0);
+//      profile for velocity
+        rearLeftMotor.setProfile(0);
+        rearLeftMotor.setF(0.39);
+        rearLeftMotor.setP(0.01);
+        rearLeftMotor.setI(0);
+        rearLeftMotor.setD(0.15);        
         LiveWindow.addActuator("DriveSystem", "CAN Talon 2", rearLeftMotor);
 
         frontRightMotor = new CANTalon(3);
+        frontRightMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
         frontRightMotor.setInverted(true);
-        frontRightMotor.setPID(0, 0, 0);
+        frontRightMotor.reverseSensor(true);
+//      profile for velocity
+        frontRightMotor.setProfile(0);
+        frontRightMotor.setF(0.36);
+        frontRightMotor.setP(0);
+        frontRightMotor.setI(0);
+        frontRightMotor.setD(0);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 3", frontRightMotor);
 
         rearRightMotor = new CANTalon(2);
+        rearRightMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
         rearRightMotor.setInverted(true);
-        rearRightMotor.setPID(0, 0, 0);
+        rearRightMotor.reverseSensor(true);
+//      profile for velocity
+        rearRightMotor.setProfile(0);
+        rearRightMotor.setF(0.46);
+        rearRightMotor.setP(0);
+        rearRightMotor.setI(0);
+        rearRightMotor.setD(0);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 4", rearRightMotor);
         
         chassis = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);

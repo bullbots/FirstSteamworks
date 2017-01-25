@@ -17,6 +17,7 @@ import org.usfirst.frc1891.FirstSteamworks.commands.*;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.AnalogAccelerometer;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -250,6 +251,14 @@ public class DriveSystem extends Subsystem implements PIDOutput {
     	rearRightMotor.set(value);
     }
     
+    public void setAllSetPoints(double setPoint)
+    {
+    	frontLeftMotor.setSetpoint(setPoint);
+    	rearLeftMotor.setSetpoint(setPoint);
+    	frontRightMotor.setSetpoint(setPoint);
+    	rearRightMotor.setSetpoint(setPoint);
+    }
+    
     public void setPositionMode()
     {
     	frontLeftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
@@ -329,5 +338,17 @@ public class DriveSystem extends Subsystem implements PIDOutput {
 				break;
 		}
 	}
+	
+	public void publishSpeeds()
+	{
+		SmartDashboard.putNumber("FrontLeftSpeed", getFrontLeftWheelFeedback());
+		System.out.println("Front Left wheel: " +getFrontLeftWheelFeedback());
+    	SmartDashboard.putNumber("RearLeftSpeed", getRearLeftWheelFeedback());
+    	System.out.println("Rear Left wheel: " +getRearLeftWheelFeedback());
+    	SmartDashboard.putNumber("FrontRightSpeed", getFrontRightWheelFeedback());
+    	System.out.println("Front Right wheel: " +getFrontRightWheelFeedback());
+    	SmartDashboard.putNumber("RearRightSpeed", getRearRightWheelFeedback());
+    	System.out.println("Rear right wheel: " +getRearRightWheelFeedback());
+    }
 }
 
