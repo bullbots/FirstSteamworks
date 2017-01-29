@@ -58,6 +58,8 @@ public class RobotMap {
     public static RobotDrive chassis;
     
     public static Camera camera;
+    
+    public static int targetSize;
 
     /**
      * 
@@ -86,10 +88,11 @@ public class RobotMap {
         frontLeftMotor.reverseSensor(true);
 //      profile for velocity
         frontLeftMotor.setProfile(0);
-        frontLeftMotor.setF(0.37);
-        frontLeftMotor.setP(0.1);
-        frontLeftMotor.setI(0);
-        frontLeftMotor.setD(1);
+        frontLeftMotor.setF(0.4);
+        frontLeftMotor.setP(0.6);
+//        0.4 to 0.6
+        frontLeftMotor.setI(0.004);
+        frontLeftMotor.setD(0);
 //      profile for position
 //        frontLeftMotor.setProfile(1);
 //        frontLeftMotor.setPID(0, 0, 0);
@@ -101,10 +104,10 @@ public class RobotMap {
 //        rearLeftMotor.setInverted(true);
 //      profile for velocity
         rearLeftMotor.setProfile(0);
-        rearLeftMotor.setF(0.39);
-        rearLeftMotor.setP(0.01);
-        rearLeftMotor.setI(0);
-        rearLeftMotor.setD(0.15);        
+        rearLeftMotor.setF(0.535);
+        rearLeftMotor.setP(0.8);
+        rearLeftMotor.setI(0.001);
+        rearLeftMotor.setD(0);        
         LiveWindow.addActuator("DriveSystem", "CAN Talon 2", rearLeftMotor);
 
         frontRightMotor = new CANTalon(3);
@@ -113,10 +116,10 @@ public class RobotMap {
         frontRightMotor.reverseSensor(true);
 //      profile for velocity
         frontRightMotor.setProfile(0);
-        frontRightMotor.setF(0.36);
-        frontRightMotor.setP(0);
-        frontRightMotor.setI(0);
-        frontRightMotor.setD(0);
+        frontRightMotor.setF(0.28);
+        frontRightMotor.setP(0.6);
+        frontRightMotor.setI(0.004);
+        frontRightMotor.setD(0.01);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 3", frontRightMotor);
 
         rearRightMotor = new CANTalon(2);
@@ -125,19 +128,21 @@ public class RobotMap {
         rearRightMotor.reverseSensor(true);
 //      profile for velocity
         rearRightMotor.setProfile(0);
-        rearRightMotor.setF(0.46);
-        rearRightMotor.setP(0);
-        rearRightMotor.setI(0);
+        rearRightMotor.setF(0.52);
+        rearRightMotor.setP(0.4);
+        rearRightMotor.setI(0.002);
         rearRightMotor.setD(0);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 4", rearRightMotor);
         
         chassis = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+        chassis.setMaxOutput(400);
         SmartDashboard.putBoolean("Use Gyro?", true);
 
         climber = new Spark(0);
         LiveWindow.addActuator("Climber", "Spark", climber);
         
         camera = new Camera();
+        targetSize = 300;
         
         gearCarrierDoubleSolenoid1 = new DoubleSolenoid(1, 0);
 //        LiveWindow.addActuator("GearCarrier", "Double Solenoid 1", gearCarrierDoubleSolenoid1);

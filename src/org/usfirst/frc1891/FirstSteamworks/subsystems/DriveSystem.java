@@ -11,6 +11,8 @@
 
 package org.usfirst.frc1891.FirstSteamworks.subsystems;
 
+import java.util.Vector;
+
 import org.usfirst.frc1891.FirstSteamworks.Robot;
 import org.usfirst.frc1891.FirstSteamworks.RobotMap;
 import org.usfirst.frc1891.FirstSteamworks.commands.*;
@@ -56,6 +58,8 @@ public class DriveSystem extends Subsystem implements PIDOutput {
     private boolean useGyro = true;
     private PIDMode m_PIDMode;
     private PIDDirection m_PIDDirection;
+    
+    private int printCounter = 0;
 
     /**
      * @author Edgar Schafer
@@ -102,6 +106,11 @@ public class DriveSystem extends Subsystem implements PIDOutput {
         // setDefaultCommand(new MySpecialCommand());
     }
     
+    public void vectorDrive(double x, double y)
+    {
+    	chassis.mecanumDrive_Cartesian(x, y, 0, 0);
+    }
+    
     /**
      * @param driverJoy 
      * 
@@ -115,13 +124,13 @@ public class DriveSystem extends Subsystem implements PIDOutput {
     		gyro = getGyro();
     		SmartDashboard.putNumber("gyro", getGyro());
     	}
-    	chassis.mecanumDrive_Cartesian(Db(driverJoy.getX(),0.1), Db(driverJoy.getY(),0.1), Db(driverJoy.getZ(),0.4), gyro);
+    	chassis.mecanumDrive_Cartesian(deadBand(driverJoy.getX(),0.1), deadBand(driverJoy.getY(),0.1), indexInput(deadBand(driverJoy.getZ(),0.6),0.6), gyro);
 //    	SmartDashboard.putNumber("Joystick X", driverJoy.getX());
 //    	SmartDashboard.putNumber("Joystick Y", driverJoy.getY());
 //    	SmartDashboard.putNumber("Joystick Z", driverJoy.getZ());
     }
     
-    double Db(double axisVal, double deadBand)
+    private double deadBand(double axisVal, double deadBand)
 	{
 		if(axisVal < -deadBand)
 			return axisVal;
@@ -130,13 +139,25 @@ public class DriveSystem extends Subsystem implements PIDOutput {
 		return 0;
 	}
     
+    private double indexInput(double axisVal, double index)
+    {
+    	if (axisVal > 0)
+    	{
+    		axisVal = axisVal - index;
+    	}
+    	else if (axisVal < 0)
+    	{
+    		axisVal = axisVal + index;
+    	}
+    	return axisVal;
+    }
     
     /**
      * @param power positive is right, negative is left
      */
     public void driveSideways(double power)
     {
-    	setPercentageMode();
+    	setVelocityMode();
     	setFrontLeftWheel(power);
     	setFrontRightWheel(-power);
     	setRearLeftWheel(-power);
@@ -163,7 +184,7 @@ public class DriveSystem extends Subsystem implements PIDOutput {
     /**
      * @return
      */
-    public double getFrontLeftWheelFeedback()
+    public double getFrontLeftWheelFeeDback()
     {
     	return frontLeftMotor.getSpeed();
     }
@@ -187,7 +208,7 @@ public class DriveSystem extends Subsystem implements PIDOutput {
     /**
      * @return
      */
-    public double getRearLeftWheelFeedback()
+    public double getRearLeftWheelFeeDback()
     {
     	return rearLeftMotor.getSpeed();
     }
@@ -211,7 +232,7 @@ public class DriveSystem extends Subsystem implements PIDOutput {
     /**
      * @return
      */
-    public double getFrontRightWheelFeedback()
+    public double getFrontRightWheelFeeDback()
     {
     	return frontRightMotor.getSpeed();
     }
@@ -235,7 +256,7 @@ public class DriveSystem extends Subsystem implements PIDOutput {
     /**
      * @return
      */
-    public double getRearRightWheelFeedback()
+    public double getRearRightWheelFeeDback()
     {
     	return rearRightMotor.getSpeed();
     }
@@ -341,14 +362,23 @@ public class DriveSystem extends Subsystem implements PIDOutput {
 	
 	public void publishSpeeds()
 	{
-		SmartDashboard.putNumber("FrontLeftSpeed", getFrontLeftWheelFeedback());
-		System.out.println("Front Left wheel: " +getFrontLeftWheelFeedback());
-    	SmartDashboard.putNumber("RearLeftSpeed", getRearLeftWheelFeedback());
-    	System.out.println("Rear Left wheel: " +getRearLeftWheelFeedback());
-    	SmartDashboard.putNumber("FrontRightSpeed", getFrontRightWheelFeedback());
-    	System.out.println("Front Right wheel: " +getFrontRightWheelFeedback());
-    	SmartDashboard.putNumber("RearRightSpeed", getRearRightWheelFeedback());
-    	System.out.println("Rear right wheel: " +getRearRightWheelFeedback());
+//		if(printCounter == 2)
+//		{
+			SmartDashboard.putNumber("FrontLeftSpeed", getFrontLeftWheelFeeDback());
+//			System.out.println("Front Left wheel: " + getFrontLeftWheelFeeDback());
+	    	SmartDashboard.putNumber("RearLeftSpeed", getRearLeftWheelFeeDback());
+//	    	System.out.println("Rear Left wheel: " + getRearLeftWheelFeeDback());
+	    	SmartDashboard.putNumber("FrontRightSpeed", getFrontRightWheelFeeDback());
+//	    	System.out.println("Front Right wheel: " + getFrontRightWheelFeeDback());
+	    	SmartDashboard.putNumber("RearRightSpeed", getRearRightWheelFeeDback());
+//	    	System.out.println("Rear right wheel: " + getRearRightWheelFeeDback());
+	    	printCounter = 0;
+//		}
+//		else
+//		{
+//			printCounter++;
+//		}
+		
     }
 }
 
