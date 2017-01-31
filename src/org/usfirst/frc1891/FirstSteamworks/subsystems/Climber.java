@@ -52,7 +52,7 @@ public class Climber extends Subsystem {
      */
     public void spinRight(double speed)
     {
-    	climber.setSpeed(0.1);
+    	climber.set(speed);
     }
 }
 

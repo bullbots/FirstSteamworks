@@ -36,7 +36,7 @@ public class Climb extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.climber.spinRight(0.1);
+    	Robot.climber.spinRight(0.6);
     }
 
     // Called repeatedly when this Command is scheduled to run
