@@ -61,6 +61,7 @@ public class Camera extends Subsystem {
     
     public Camera()
     {
+    	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 //    	new Thread(() -> {
 //            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 //            camera.setResolution(640, 480);
