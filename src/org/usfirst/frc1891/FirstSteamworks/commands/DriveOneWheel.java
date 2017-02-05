@@ -61,7 +61,7 @@ public class DriveOneWheel extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveSystem.setAllMotors(0);
+    	Robot.driveSystem.stopMotors();
 //    	Robot.driveSystem.setAllSetPoints(0);
     }
     

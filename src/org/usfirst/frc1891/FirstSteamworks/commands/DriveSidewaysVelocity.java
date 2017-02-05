@@ -46,7 +46,7 @@ public class DriveSidewaysVelocity extends TimedCommand {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveSystem.setAllMotors(0);
+    	Robot.driveSystem.stopMotors();
     	Robot.driveSystem.setPercentageMode();
     }
 

@@ -14,7 +14,6 @@ package org.usfirst.frc1891.FirstSteamworks.subsystems;
 import org.usfirst.frc1891.FirstSteamworks.RobotMap;
 import org.usfirst.frc1891.FirstSteamworks.commands.*;
 import edu.wpi.first.wpilibj.Compressor;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 

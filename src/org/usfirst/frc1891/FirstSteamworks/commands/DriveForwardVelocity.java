@@ -22,7 +22,7 @@ public class DriveForwardVelocity extends TimedCommand {
 	
     /**
      * Drives straight forward or backward, without turning or moving sideways
-     * @param distance distance in inches to be traveled
+     * @param speed target wheel speed in rotations per second. 
      */
     public DriveForwardVelocity(int speed) {
     	super(2);
@@ -46,7 +46,7 @@ public class DriveForwardVelocity extends TimedCommand {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveSystem.setAllMotors(0);
+    	Robot.driveSystem.stopMotors();
     	Robot.driveSystem.setPercentageMode();
     }
 

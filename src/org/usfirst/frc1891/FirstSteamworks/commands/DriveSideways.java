@@ -23,6 +23,10 @@ public class DriveSideways extends Command {
     private double frontLeftRearRight;
     private double frontRightRearLeft;
     
+    /**
+     * Drives robot sideways a certain distance.
+     * @param distance target travel length
+     */
     public DriveSideways(int distance) {
         requires(Robot.driveSystem);
         frontLeftRearRight = distance/25.13;

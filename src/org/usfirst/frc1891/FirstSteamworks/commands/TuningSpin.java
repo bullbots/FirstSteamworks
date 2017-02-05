@@ -35,7 +35,7 @@ public class TuningSpin extends Command {
 	
 	protected void end()
 	{
-		Robot.driveSystem.setAllMotors(0);
+		Robot.driveSystem.stopMotors();
 	}
 	
 	protected void interrupted()

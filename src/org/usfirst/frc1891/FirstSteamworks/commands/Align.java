@@ -15,9 +15,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc1891.FirstSteamworks.subsystems.DriveSystem;
 
 import org.usfirst.frc1891.FirstSteamworks.Robot;
 
@@ -36,10 +34,13 @@ public class Align extends Command{
 	boolean isFinished = false;
 	double error;
 	static final double m_acceptableError = 50;
+	
+	//PID values for side to side alignment
 	private static final double m_XkP = 0.0017;
 	private static final double m_XkI = 0.00001;
 	private static final double m_XkD = 0;
 	
+	//PID values for forward backward alignment
 	private static final double m_YkP = 0.001;
 	private static final double m_YkI = 0;
 	private static final double m_YkD = 0;
@@ -153,7 +154,7 @@ public class Align extends Command{
     protected void end() {
     	m_controllerX.disable();
     	m_controllerY.enable();
-    	Robot.driveSystem.setAllMotors(0);
+    	Robot.driveSystem.stopMotors();
     }
 
     // Called when another command which requires one or more of the same

@@ -24,7 +24,7 @@ public class JoyStickDrive extends Command {
 
 	    // Called repeatedly when this Command is scheduled to run
 	    protected void execute() {
-	    	Robot.driveSystem.joyDrive(Robot.oi.getDriveStick());
+	    	Robot.driveSystem.joyDriveVelocity(Robot.oi.getDriveStick());
 //	    	Robot.driveSystem.publishSpeeds();
 	    }
 
