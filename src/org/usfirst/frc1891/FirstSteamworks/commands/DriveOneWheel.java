@@ -31,7 +31,6 @@ public class DriveOneWheel extends Command {
     protected void initialize() {
 //    	Robot.driveSystem.setVelocityMode();
     	Robot.driveSystem.setPercentageMode();
-    	Robot.driveSystem.setAllMotors(0);
     }
 
     // Called repeatedly when this Command is scheduled to run

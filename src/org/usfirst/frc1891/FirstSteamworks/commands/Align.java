@@ -153,7 +153,7 @@ public class Align extends Command{
     // Called once after isFinished returns true
     protected void end() {
     	m_controllerX.disable();
-    	m_controllerY.enable();
+    	m_controllerY.disable();
     	Robot.driveSystem.stopMotors();
     }
 

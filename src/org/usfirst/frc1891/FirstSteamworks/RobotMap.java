@@ -94,14 +94,22 @@ public class RobotMap {
     	frontLeftMotor = new CANTalon(1);
 //        frontLeftMotor.setInverted(true);
         frontLeftMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-//        frontLeftMotor.reverseSensor(true);
+        frontLeftMotor.reverseSensor(true);
 //      profile for velocity
         frontLeftMotor.setProfile(0);
-        frontLeftMotor.setF(0.4);
-        frontLeftMotor.setP(0.6);
-//        0.4 to 0.6
-        frontLeftMotor.setI(0.004);
-        frontLeftMotor.setD(0);
+//      Final bot gains
+        
+        frontLeftMotor.setF(0.415);
+        frontLeftMotor.setP(0.4);
+        frontLeftMotor.setI(0);
+        frontLeftMotor.setD(0.04);
+        
+//      Practice bot gains
+//        frontLeftMotor.setF(0.4);
+//        frontLeftMotor.setP(0.6);
+////        0.4 to 0.6
+//        frontLeftMotor.setI(0.004);
+//        frontLeftMotor.setD(0);
 //      profile for position
 //        frontLeftMotor.setProfile(1);
 //        frontLeftMotor.setPID(0, 0, 0);
@@ -110,40 +118,66 @@ public class RobotMap {
 //        rearLeftMotor = new CANTalon(1);
         rearLeftMotor = new CANTalon(2);
         rearLeftMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-//        rearLeftMotor.reverseSensor(true);
+        rearLeftMotor.reverseSensor(true);
 //        rearLeftMotor.setInverted(true);
 //      profile for velocity
         rearLeftMotor.setProfile(0);
-        rearLeftMotor.setF(0.535);
-        rearLeftMotor.setP(0.8);
-        rearLeftMotor.setI(0.001);
-        rearLeftMotor.setD(0);        
+//      Final bot gains
+        
+        rearLeftMotor.setF(0.33);
+        rearLeftMotor.setP(0.05);
+        rearLeftMotor.setI(0.0001);
+        rearLeftMotor.setD(0);
+        
+//      Practice bot gains
+//        rearLeftMotor.setF(0.535);
+//        rearLeftMotor.setP(0.8);
+//        rearLeftMotor.setI(0.001);
+//        rearLeftMotor.setD(0);        
         LiveWindow.addActuator("DriveSystem", "CAN Talon 2", rearLeftMotor);
 
 //        frontRightMotor = new CANTalon(3);
         frontRightMotor = new CANTalon(3);
         frontRightMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-//        frontRightMotor.setInverted(true);
-//        frontRightMotor.reverseSensor(true);
+        frontRightMotor.setInverted(true);
+        frontRightMotor.reverseSensor(true);
 //      profile for velocity
         frontRightMotor.setProfile(0);
-        frontRightMotor.setF(0.28);
-        frontRightMotor.setP(0.6);
-        frontRightMotor.setI(0.004);
-        frontRightMotor.setD(0.01);
+        
+        frontRightMotor.setF(0.395);
+        frontRightMotor.setP(0.3);
+        frontRightMotor.setI(0.0001);
+        frontRightMotor.setD(0);
+        
+//    Final bot gains
+        
+//    Practice bot gains
+//        frontRightMotor.setF(0.28);
+//        frontRightMotor.setP(0.6);
+//        frontRightMotor.setI(0.004);
+//        frontRightMotor.setD(0.01);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 3", frontRightMotor);
 
 //        rearRightMotor = new CANTalon(2);
         rearRightMotor = new CANTalon(4);
         rearRightMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-//        rearRightMotor.setInverted(true);
-//        rearRightMotor.reverseSensor(true);
+        rearRightMotor.setInverted(true);
+        rearRightMotor.reverseSensor(true);
 //      profile for velocity
         rearRightMotor.setProfile(0);
-        rearRightMotor.setF(0.52);
-        rearRightMotor.setP(0.4);
-        rearRightMotor.setI(0.002);
+        
+        rearRightMotor.setF(0.31);
+        rearRightMotor.setP(0.2);
+        rearRightMotor.setI(0);
         rearRightMotor.setD(0);
+        
+//      Final bot gains
+        
+//      Practice bot gains
+//        rearRightMotor.setF(0.52);
+//        rearRightMotor.setP(0.4);
+//        rearRightMotor.setI(0.002);
+//        rearRightMotor.setD(0);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 4", rearRightMotor);
         
         chassis = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
