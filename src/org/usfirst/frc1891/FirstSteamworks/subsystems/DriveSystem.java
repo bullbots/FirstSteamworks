@@ -60,7 +60,7 @@ public class DriveSystem extends PIDSubsystem {
     private boolean doneTurning = true;
     
     private int printCounter;
-	private double allowableErrorPosition = 0.05;
+	private double allowableErrorPosition = 500;
     
     /**
      * @param p
@@ -108,21 +108,8 @@ public class DriveSystem extends PIDSubsystem {
      * 
      */
     public void drive(double angle) {
+    	gyroTarget = gyroTarget + angle;
     	this.setSetpoint(gyroTarget);
-    	
-    	if (angle != 0) {
-    		gyroTarget = normalizeAngle(gyroTarget - angle);
-    		doneTurning = false;
-    		turnTimeout = 0;
-    	}
-    	else if ((!doneTurning) && (turnTimeout > 5)) {
-    		doneTurning = true;
-    		gyroTarget = getGyro();
-    	}
-    	else if (!doneTurning) {
-    		turnTimeout++;
-    	}
-    	
     	
     	double instantGyroCorrection;
     	if (onTarget()) {
@@ -131,18 +118,13 @@ public class DriveSystem extends PIDSubsystem {
     	else {
     		instantGyroCorrection = gyroCorrection;
     	}
-    	SmartDashboard.putNumber("gyro target", gyroTarget);
-    	SmartDashboard.putNumber("gyro correction", gyroCorrection);
-    	
-    	useGyro = SmartDashboard.getBoolean("Use Gyro?", true);
-    	double gyro = 0;
-    	if (useGyro == true)
-    	{
-    		gyro = getGyro();
-    		SmartDashboard.putNumber("gyro", getGyro());
-    	}
-    	chassis.mecanumDrive_Cartesian(0, 0, instantGyroCorrection, gyro);
+    	System.out.println("gyro correct: " + instantGyroCorrection);
+    	chassis.mecanumDrive_Cartesian(0, 0, instantGyroCorrection, 0);
 //    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
+    }
+    
+    public boolean isTurnFinished() {
+    	return onTarget();
     }
     
     /**
@@ -177,8 +159,12 @@ public class DriveSystem extends PIDSubsystem {
 //    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
     }
     
-    public boolean isTurnFinished() {
-    	return doneTurning;
+    
+    
+
+    
+    public void zeroAngleError() {
+    	gyroTarget = getGyro();
     }
     
     /**
@@ -336,8 +322,8 @@ public class DriveSystem extends PIDSubsystem {
     	setPositionMode();
     	frontLeftMotor.set(setPoint);
     	rearLeftMotor.set(setPoint);
-    	frontRightMotor.set(setPoint);
-    	rearRightMotor.set(setPoint);
+    	frontRightMotor.set(-setPoint);
+    	rearRightMotor.set(-setPoint);
     }
     
     /**
@@ -364,6 +350,13 @@ public class DriveSystem extends PIDSubsystem {
     	rearRightMotor.set(0);
     }
     
+    
+    public void zeroPosition() {
+    	frontLeftMotor.setPosition(0);
+    	rearLeftMotor.setPosition(0);
+    	frontRightMotor.setPosition(0);
+    	rearRightMotor.setPosition(0);
+    }
     
     
     
@@ -587,12 +580,16 @@ public class DriveSystem extends PIDSubsystem {
     {
     	frontLeftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	frontLeftMotor.setProfile(1);
+    	frontLeftMotor.configPeakOutputVoltage(+6f, -6f);
     	rearLeftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	rearLeftMotor.setProfile(1);
+    	rearLeftMotor.configPeakOutputVoltage(+6f, -6f);
     	frontRightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	frontRightMotor.setProfile(1);
+    	frontRightMotor.configPeakOutputVoltage(+6f, -6f);
     	rearRightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	rearRightMotor.setProfile(1);
+    	rearRightMotor.configPeakOutputVoltage(+6f, -6f);
     }
     
     /**
@@ -613,12 +610,16 @@ public class DriveSystem extends PIDSubsystem {
     {
     	frontLeftMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
     	frontLeftMotor.setProfile(0);
+    	frontLeftMotor.configPeakOutputVoltage(+12f, -12f);
     	rearLeftMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
     	rearLeftMotor.setProfile(0);
+    	rearLeftMotor.configPeakOutputVoltage(+12f, -12f);
     	frontRightMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
     	frontRightMotor.setProfile(0);
+    	frontRightMotor.configPeakOutputVoltage(+12f, -12f);
     	rearRightMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
     	rearRightMotor.setProfile(0);
+    	rearRightMotor.configPeakOutputVoltage(+12f, -12f);
     }
     
     /**
@@ -634,10 +635,11 @@ public class DriveSystem extends PIDSubsystem {
     
     
     public boolean onTargetPosition() {
-    	boolean frontLeft = frontLeftMotor.getClosedLoopError() < allowableErrorPosition;
-    	boolean rearLeft = rearLeftMotor.getClosedLoopError() < allowableErrorPosition;
-    	boolean frontRight = frontRightMotor.getClosedLoopError() < allowableErrorPosition;
-    	boolean rearRight = rearRightMotor.getClosedLoopError() < allowableErrorPosition;
+    	System.out.println(frontLeftMotor.getClosedLoopError());
+    	boolean frontLeft = (frontLeftMotor.getClosedLoopError() < allowableErrorPosition) && (frontLeftMotor.getClosedLoopError() > -allowableErrorPosition);
+    	boolean rearLeft = (rearLeftMotor.getClosedLoopError() < allowableErrorPosition) && (rearLeftMotor.getClosedLoopError() > -allowableErrorPosition);
+    	boolean frontRight = (frontRightMotor.getClosedLoopError() < allowableErrorPosition) && (frontRightMotor.getClosedLoopError() > -allowableErrorPosition);
+    	boolean rearRight = (rearRightMotor.getClosedLoopError() < allowableErrorPosition) && (rearRightMotor.getClosedLoopError() > -allowableErrorPosition);
 		return frontLeft && rearLeft && frontRight && rearRight;
     }
     
@@ -650,14 +652,14 @@ public class DriveSystem extends PIDSubsystem {
 	{
 //		if(printCounter == 2)
 //		{
-			SmartDashboard.putNumber("FrontLeftSpeed", getFrontLeftWheelSpeed());
-//			System.out.println("Front Left wheel: " + getFrontLeftWheelSpeed());
-	    	SmartDashboard.putNumber("RearLeftSpeed", getRearLeftWheelSpeed());
+//			SmartDashboard.putNumber("FrontLeftSpeed", getFrontLeftWheelSpeed());
+			System.out.println("Front Left wheel: " + getFrontLeftWheelSpeed());
+//	    	SmartDashboard.putNumber("RearLeftSpeed", getRearLeftWheelSpeed());
 	    	System.out.println("Rear Left wheel: " + getRearLeftWheelSpeed());
-	    	SmartDashboard.putNumber("FrontRightSpeed", getFrontRightWheelSpeed());
-//	    	System.out.println("Front Right wheel: " + getFrontRightWheelSpeed());
-	    	SmartDashboard.putNumber("RearRightSpeed", getRearRightWheelSpeed());
-//	    	System.out.println("Rear right wheel: " + getRearRightWheelSpeed());
+//	    	SmartDashboard.putNumber("FrontRightSpeed", getFrontRightWheelSpeed());
+	    	System.out.println("Front Right wheel: " + getFrontRightWheelSpeed());
+//	    	SmartDashboard.putNumber("RearRightSpeed", getRearRightWheelSpeed());
+	    	System.out.println("Rear right wheel: " + getRearRightWheelSpeed());
 //	    	printCounter = 0;
 //		}
 //		else
@@ -666,6 +668,17 @@ public class DriveSystem extends PIDSubsystem {
 //		}
 		
     }
+	
+	/**
+	 * 
+	 */
+	public void publishDistances() {
+		System.out.println("Front Left wheel: " + getFrontLeftWheelPosition());
+		System.out.println("front left wheel output: " + frontLeftMotor.getOutputVoltage());
+//    	System.out.println("Rear Left wheel: " + getRearLeftWheelPosition());
+//    	System.out.println("Front Right wheel: " + getFrontRightWheelPosition());
+//    	System.out.println("Rear right wheel: " + getRearRightWheelPosition());
+	}
 
 	@Override
 	protected double returnPIDInput() {

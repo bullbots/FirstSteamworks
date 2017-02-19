@@ -101,22 +101,22 @@ public class OI {
         // SmartDashboard Buttons
 //        SmartDashboard.putData("Align", new Align());
         
-        SmartDashboard.putNumber("Wheel", 0);
-        SmartDashboard.putData("DriveForward", new DriveForward(12));
+//        SmartDashboard.putNumber("Wheel", 0);
+        SmartDashboard.putData("DriveForward", new DriveForward(120));
         SmartDashboard.putData("DriveSideways", new DriveSideways(12));
-        SmartDashboard.putData("testDriveAll", new TestDriveAll());
-        SmartDashboard.putData("TestDriveSideways", new TestDriveSideways(1));
-        SmartDashboard.putData("Turn", new Turn(360));
+//        SmartDashboard.putData("testDriveAll", new TestDriveAll());
+//        SmartDashboard.putData("TestDriveSideways", new TestDriveSideways(1));
+        SmartDashboard.putData("Turn", new Turn(90));
         SmartDashboard.putData("Align", new Align());
 //        SmartDashboard.putData("PlaceGear", new PlaceGear());
 //        SmartDashboard.putData("AutonomousCommand", new AutonomousCommand());
         SmartDashboard.putData("Climb", new Climb());
         SmartDashboard.putData("PushGear", new PushGear());
-        SmartDashboard.putData("DriveFrontLeftWheel", new DriveOneWheel(0));
-        SmartDashboard.putData("DriveRearLeftWheel", new DriveOneWheel(1));
-        SmartDashboard.putData("DriveFrontRightWheel", new DriveOneWheel(2));
-        SmartDashboard.putData("DriveRearRightWheel", new DriveOneWheel(3));
-        SmartDashboard.putData("tuner", new TuningSpin());
+//        SmartDashboard.putData("DriveFrontLeftWheel", new DriveOneWheel(0));
+//        SmartDashboard.putData("DriveRearLeftWheel", new DriveOneWheel(1));
+//        SmartDashboard.putData("DriveFrontRightWheel", new DriveOneWheel(2));
+//        SmartDashboard.putData("DriveRearRightWheel", new DriveOneWheel(3));
+//        SmartDashboard.putData("tuner", new TuningSpin());
         SmartDashboard.putData("DriveForwardVelocity", new DriveForwardVelocity(100));
         SmartDashboard.putData("DriveSidewaysVelocity", new DriveSidewaysVelocity(100));
         SmartDashboard.putData("Start Compressor", new RunCompressor());

@@ -76,6 +76,8 @@ public class RobotMap {
     public static CANTalon shooterMotor;
 
 	public static DigitalInput alignLimit;
+
+	public static DigitalInput alignShootLimit;
     /**
      * 
      */
@@ -113,7 +115,15 @@ public class RobotMap {
         frontLeftMotor.setI(0);
         frontLeftMotor.setD(0.04);
         frontLeftMotor.setCloseLoopRampRate(0.01);
+        frontLeftMotor.configPeakOutputVoltage(+12f, -12f);
+        frontLeftMotor.configNominalOutputVoltage(0, 0);
         
+        frontLeftMotor.setProfile(1);
+        frontLeftMotor.setP(0.05);
+        frontLeftMotor.setI(0);
+        frontLeftMotor.setD(0);
+        frontLeftMotor.setCloseLoopRampRate(0.01);
+//        frontLeftMotor.configPeakOutputVoltage(6, -3);
 //      Practice bot gains
 //        frontLeftMotor.setF(0.4);
 //        frontLeftMotor.setP(0.6);
@@ -140,6 +150,14 @@ public class RobotMap {
         rearLeftMotor.setD(0);
         rearLeftMotor.setCloseLoopRampRate(0.01);
         
+        rearLeftMotor.setProfile(1);
+        rearLeftMotor.setP(0.05);
+        rearLeftMotor.setI(0);
+        rearLeftMotor.setD(0);
+        rearLeftMotor.setCloseLoopRampRate(0.01);
+        rearLeftMotor.configPeakOutputVoltage(+12f, -12f);
+        rearLeftMotor.configNominalOutputVoltage(0, 0);
+        
 //      Practice bot gains
 //        rearLeftMotor.setF(0.535);
 //        rearLeftMotor.setP(0.8);
@@ -160,6 +178,14 @@ public class RobotMap {
         frontRightMotor.setI(0.0001);
         frontRightMotor.setD(0);
         frontRightMotor.setCloseLoopRampRate(0.01);
+        
+        frontRightMotor.setProfile(1);
+        frontRightMotor.setP(0.05);
+        frontRightMotor.setI(0);
+        frontRightMotor.setD(0);
+        frontRightMotor.setCloseLoopRampRate(0.01);
+        frontRightMotor.configPeakOutputVoltage(+12f, -12f);
+        frontRightMotor.configNominalOutputVoltage(0, 0);
         
 //    Final bot gains
         
@@ -183,6 +209,14 @@ public class RobotMap {
         rearRightMotor.setI(0);
         rearRightMotor.setD(0);
         rearRightMotor.setCloseLoopRampRate(0.01);
+        
+        rearRightMotor.setProfile(1);
+        rearRightMotor.setP(0.05);
+        rearRightMotor.setI(0);
+        rearRightMotor.setD(0);
+        rearRightMotor.setCloseLoopRampRate(0.01);
+        rearRightMotor.configPeakOutputVoltage(+12f, -12f);
+        rearRightMotor.configNominalOutputVoltage(0, 0);
         
 //      Final bot gains
         
@@ -213,6 +247,9 @@ public class RobotMap {
         
         alignLimit = new DigitalInput(2);
         LiveWindow.addSensor("Climber", "Climb Align limit", alignLimit);
+        
+        alignShootLimit = new DigitalInput(3);
+        LiveWindow.addSensor("Climber", "Climb Align Shoot limit", alignShootLimit);
         
         ballServo = new Servo(1);
         LiveWindow.addActuator("BallServo", "Servo", ballServo);
