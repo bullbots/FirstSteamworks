@@ -60,7 +60,7 @@ public class DriveSystem extends PIDSubsystem {
     private boolean doneTurning = true;
     
     private int printCounter;
-	private double allowableErrorPosition = 500;
+	private double allowableErrorPosition = 2500;
     
     /**
      * @param p
@@ -74,7 +74,7 @@ public class DriveSystem extends PIDSubsystem {
 		super(p, i, d);
 		this.setAbsoluteTolerance(2);
 		this.getPIDController().setInputRange(0, 360);
-		this.getPIDController().setOutputRange(-0.4, 0.4);
+		this.getPIDController().setOutputRange(-0.2, 0.2);
 		this.getPIDController().setContinuous();
 		setSetpoint(0);
 		enable();
@@ -108,8 +108,18 @@ public class DriveSystem extends PIDSubsystem {
      * 
      */
     public void drive(double angle) {
+    	setVelocityMode();
+    	angle = normalizeAngle(angle);
     	gyroTarget = gyroTarget + angle;
     	this.setSetpoint(gyroTarget);
+    	
+
+    	SmartDashboard.putNumber("gyro target", gyroTarget);
+    	SmartDashboard.putNumber("gyro correction", gyroCorrection);
+    	SmartDashboard.putNumber("yaw rate", nav.getRate());
+    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
+    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
+    	SmartDashboard.putNumber("gyro", getGyro());
     	
     	double instantGyroCorrection;
     	if (onTarget()) {
@@ -133,6 +143,7 @@ public class DriveSystem extends PIDSubsystem {
      * @param angle
      */
     public void drive(double x, double y, double z, boolean allowGyro) {
+    	setVelocityMode();
     	this.setSetpoint(gyroTarget);
     	
     	if (z != 0) {
@@ -147,6 +158,9 @@ public class DriveSystem extends PIDSubsystem {
     	
     	SmartDashboard.putNumber("gyro target", gyroTarget);
     	SmartDashboard.putNumber("gyro correction", gyroCorrection);
+    	SmartDashboard.putNumber("yaw rate", nav.getRate());
+    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
+    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
     	
     	useGyro = SmartDashboard.getBoolean("Use Gyro?", true);
     	double gyro = 0;

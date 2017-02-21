@@ -61,6 +61,8 @@ public class OI {
      * 
      */
     public JoystickButton climbButton;
+    
+    public JoystickButton ZeroGyroButton;
     /**
      * 
      */
@@ -95,6 +97,9 @@ public class OI {
         gearButton.whenPressed(new PlaceGear());
         overrideButton = new JoystickButton(driveStick, 3);
         overrideButton.whenPressed(new OverrideCommands());
+        ZeroGyroButton = new JoystickButton(driveStick, 5);
+        ZeroGyroButton.whenPressed(new ZeroGyro());
+        
 //        gearButton.whenPressed(new PlaceGear());
 
 
@@ -102,6 +107,7 @@ public class OI {
 //        SmartDashboard.putData("Align", new Align());
         
 //        SmartDashboard.putNumber("Wheel", 0);
+        SmartDashboard.putData("Zero Gyro", new ZeroGyro());
         SmartDashboard.putData("DriveForward", new DriveForward(120));
         SmartDashboard.putData("DriveSideways", new DriveSideways(12));
 //        SmartDashboard.putData("testDriveAll", new TestDriveAll());
