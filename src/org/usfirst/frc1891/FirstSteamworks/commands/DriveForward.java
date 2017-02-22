@@ -49,6 +49,7 @@ public class DriveForward extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println("driveForwardFinished");
     	Robot.driveSystem.setPercentageMode();
     	Robot.driveSystem.zeroAngleError();
     	Robot.driveSystem.clear();

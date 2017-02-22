@@ -109,8 +109,7 @@ public class DriveSystem extends PIDSubsystem {
      */
     public void drive(double angle) {
     	setVelocityMode();
-    	angle = normalizeAngle(angle);
-    	gyroTarget = gyroTarget + angle;
+    	gyroTarget = normalizeAngle(gyroTarget + angle);
     	this.setSetpoint(gyroTarget);
     	
 
@@ -219,10 +218,17 @@ public class DriveSystem extends PIDSubsystem {
      * @param driverJoy joystick to be read.
      * 
      */
-    public void joyDriveVelocity(Joystick driverJoy)
+    public void joyDriveVelocity(Joystick driverJoy, int controllerProfile)
     {
     	setVelocityMode();
-    	drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getZ(),0.6),0.6)),true);
+    	switch (controllerProfile) {
+    		case 0:
+    			drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getZ(),0.6),0.6)),true);
+    			break;
+    		case 1:
+    			drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getRawAxis(5),0.6),0.6)),true);
+    			break;
+    	}
     }
     
     // Creates an area on joystick where no value is registered. Prevents controller touchiness.

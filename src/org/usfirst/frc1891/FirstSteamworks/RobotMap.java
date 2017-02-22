@@ -245,10 +245,10 @@ public class RobotMap {
         climbLimit = new DigitalInput(1);
         LiveWindow.addSensor("Climber", "Climb limit", climbLimit);
         
-        alignLimit = new DigitalInput(2);
+        alignLimit = new DigitalInput(3);
         LiveWindow.addSensor("Climber", "Climb Align limit", alignLimit);
         
-        alignShootLimit = new DigitalInput(3);
+        alignShootLimit = new DigitalInput(2);
         LiveWindow.addSensor("Climber", "Climb Align Shoot limit", alignShootLimit);
         
         ballServo = new Servo(1);

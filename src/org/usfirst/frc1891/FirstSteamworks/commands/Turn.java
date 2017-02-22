@@ -49,6 +49,7 @@ public class Turn extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println("turnFinished");
     	Robot.driveSystem.stopMotors();
     }
 

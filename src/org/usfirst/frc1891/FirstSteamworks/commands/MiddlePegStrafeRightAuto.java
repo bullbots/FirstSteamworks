@@ -42,6 +42,10 @@ public class MiddlePegStrafeRightAuto extends CommandGroup {
         // arm.
         
     	addSequential(new MiddlePegAuto());
- 
+    	addSequential(new DriveForward(20));
+    	addSequential(new Turn(90));
+    	addSequential(new DriveForward(80));
+    	addSequential(new Turn(-90));
+    	addSequential(new DriveForward(80));
     } 
 }
