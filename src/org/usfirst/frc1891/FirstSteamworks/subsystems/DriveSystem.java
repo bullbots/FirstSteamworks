@@ -105,9 +105,37 @@ public class DriveSystem extends PIDSubsystem {
      * @param angle 
      * 
      */
-    public void drive(double angle) {
+    public void turn(double angle) {
     	setVelocityMode();
     	gyroTarget = normalizeAngle(gyroTarget + angle);
+    	this.setSetpoint(gyroTarget);
+    	
+
+    	SmartDashboard.putNumber("gyro target", gyroTarget);
+    	SmartDashboard.putNumber("gyro correction", gyroCorrection);
+//    	SmartDashboard.putNumber("yaw rate", nav.getRate());
+//    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
+//    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
+    	SmartDashboard.putNumber("gyro", getGyro());
+    	
+    	double instantGyroCorrection;
+    	if (onTarget()) {
+    		instantGyroCorrection = 0;
+    	}
+    	else {
+    		instantGyroCorrection = gyroCorrection;
+    	}
+//    	System.out.println("gyro correct: " + instantGyroCorrection);
+    	chassis.mecanumDrive_Cartesian(0, 0, instantGyroCorrection, 0);
+//    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
+    }
+    
+    /**
+     * @param angle
+     */
+    public void turnTo(double angle) {
+    	setVelocityMode();
+    	gyroTarget = normalizeAngle(angle);
     	this.setSetpoint(gyroTarget);
     	
 
@@ -143,14 +171,16 @@ public class DriveSystem extends PIDSubsystem {
     	setVelocityMode();
     	this.setSetpoint(gyroTarget);
     	
-    	if (z != 0) {
-    		gyroTarget = getGyro();
-    	}
-    	else if (onTarget()) {
-    		z = 0;
-    	}
-    	else {
-    		z = gyroCorrection;
+    	if (SmartDashboard.getBoolean("Run Wheel PID?", true)) {
+	    	if (z != 0) {
+	    		gyroTarget = getGyro();
+	    	}
+	    	else if (onTarget() ) {
+	    		z = 0;
+	    	}
+	    	else {
+	    		z = gyroCorrection;
+	    	}
     	}
     	
     	SmartDashboard.putNumber("gyro target", gyroTarget);

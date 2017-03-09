@@ -243,7 +243,6 @@ public class RobotMap {
         
         chassis = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
         chassis.setMaxOutput(400);
-        SmartDashboard.putBoolean("Use Gyro?", true);
 
         climber = new Spark(0);
         LiveWindow.addActuator("Climber", "Spark", climber);
