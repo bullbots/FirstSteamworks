@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PWM;
@@ -78,6 +79,9 @@ public class RobotMap {
 	public static DigitalInput alignLimit;
 
 	public static DigitalInput alignShootLimit;
+	
+	public static I2C arduino;
+	
     /**
      * 
      */
@@ -105,11 +109,11 @@ public class RobotMap {
     	frontLeftMotor = new CANTalon(1);
 //        frontLeftMotor.setInverted(true);
         frontLeftMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+//      Final bot gains
         frontLeftMotor.reverseSensor(true);
+        
 //      profile for velocity
         frontLeftMotor.setProfile(0);
-//      Final bot gains
-        
         frontLeftMotor.setF(0.415);
         frontLeftMotor.setP(0.4);
         frontLeftMotor.setI(0);
@@ -118,38 +122,38 @@ public class RobotMap {
         frontLeftMotor.configPeakOutputVoltage(+12f, -12f);
         frontLeftMotor.configNominalOutputVoltage(0, 0);
         
+//      profile for position
         frontLeftMotor.setProfile(1);
         frontLeftMotor.setP(0.05);
         frontLeftMotor.setI(0);
         frontLeftMotor.setD(0);
         frontLeftMotor.setCloseLoopRampRate(0.01);
-//        frontLeftMotor.configPeakOutputVoltage(6, -3);
-//      Practice bot gains
+        
+////      Practice bot gains
+//        frontLeftMotor.reverseSensor(true);
+//        frontLeftMotor.setProfile(0);
 //        frontLeftMotor.setF(0.4);
 //        frontLeftMotor.setP(0.6);
-////        0.4 to 0.6
 //        frontLeftMotor.setI(0.004);
 //        frontLeftMotor.setD(0);
-//      profile for position
-//        frontLeftMotor.setProfile(1);
-//        frontLeftMotor.setPID(0, 0, 0);
         LiveWindow.addActuator("DriveSystem", "CAN Talon 1", frontLeftMotor);
 
 //        rearLeftMotor = new CANTalon(1);
         rearLeftMotor = new CANTalon(2);
         rearLeftMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+        
+//      Final bot gains
         rearLeftMotor.reverseSensor(true);
-//        rearLeftMotor.setInverted(true);
+        
 //      profile for velocity
         rearLeftMotor.setProfile(0);
-//      Final bot gains
-        
         rearLeftMotor.setF(0.33);
         rearLeftMotor.setP(0.05);
         rearLeftMotor.setI(0.0001);
         rearLeftMotor.setD(0);
         rearLeftMotor.setCloseLoopRampRate(0.01);
         
+//      profile for position
         rearLeftMotor.setProfile(1);
         rearLeftMotor.setP(0.05);
         rearLeftMotor.setI(0);
@@ -159,26 +163,30 @@ public class RobotMap {
         rearLeftMotor.configNominalOutputVoltage(0, 0);
         
 //      Practice bot gains
+//        rearLeftMotor.reverseSensor(true);
+//        rearLeftMotor.setProfile(0);
 //        rearLeftMotor.setF(0.535);
 //        rearLeftMotor.setP(0.8);
 //        rearLeftMotor.setI(0.001);
 //        rearLeftMotor.setD(0);        
         LiveWindow.addActuator("DriveSystem", "CAN Talon 2", rearLeftMotor);
 
-//        frontRightMotor = new CANTalon(3);
         frontRightMotor = new CANTalon(3);
         frontRightMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+        
+//      Final bot gains
         frontRightMotor.setInverted(true);
         frontRightMotor.reverseSensor(true);
+        
 //      profile for velocity
         frontRightMotor.setProfile(0);
-        
         frontRightMotor.setF(0.395);
         frontRightMotor.setP(0.3);
         frontRightMotor.setI(0.0001);
         frontRightMotor.setD(0);
         frontRightMotor.setCloseLoopRampRate(0.01);
         
+//      profile for position
         frontRightMotor.setProfile(1);
         frontRightMotor.setP(0.05);
         frontRightMotor.setI(0);
@@ -187,9 +195,10 @@ public class RobotMap {
         frontRightMotor.configPeakOutputVoltage(+12f, -12f);
         frontRightMotor.configNominalOutputVoltage(0, 0);
         
-//    Final bot gains
-        
 //    Practice bot gains
+//        frontRightMotor.setInverted(true);
+//        frontRightMotor.reverseSensor(true);
+//        frontRightMotor.setProfile(0);
 //        frontRightMotor.setF(0.28);
 //        frontRightMotor.setP(0.6);
 //        frontRightMotor.setI(0.004);
@@ -199,17 +208,20 @@ public class RobotMap {
 //        rearRightMotor = new CANTalon(2);
         rearRightMotor = new CANTalon(4);
         rearRightMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+        
+//      Final bot gains
         rearRightMotor.setInverted(true);
         rearRightMotor.reverseSensor(true);
+        
 //      profile for velocity
         rearRightMotor.setProfile(0);
-        
         rearRightMotor.setF(0.31);
         rearRightMotor.setP(0.2);
         rearRightMotor.setI(0);
         rearRightMotor.setD(0);
         rearRightMotor.setCloseLoopRampRate(0.01);
         
+//      profile for position
         rearRightMotor.setProfile(1);
         rearRightMotor.setP(0.05);
         rearRightMotor.setI(0);
@@ -218,9 +230,11 @@ public class RobotMap {
         rearRightMotor.configPeakOutputVoltage(+12f, -12f);
         rearRightMotor.configNominalOutputVoltage(0, 0);
         
-//      Final bot gains
         
 //      Practice bot gains
+//        rearRightMotor.reverseSensor(true);
+//        rearRightMotor.setInverted(true);
+//        rearRightMotor.setProfile(0);
 //        rearRightMotor.setF(0.52);
 //        rearRightMotor.setP(0.4);
 //        rearRightMotor.setI(0.002);
@@ -257,6 +271,7 @@ public class RobotMap {
         shooterMotor = new CANTalon(5);
         LiveWindow.addActuator("Shooter","Ball Shooter" , shooterMotor);
         
+        arduino = new I2C(I2C.Port.kOnboard, 4);
 
     // END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=CONSTRUCTORS
     }

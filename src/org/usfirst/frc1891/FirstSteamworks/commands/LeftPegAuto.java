@@ -45,9 +45,7 @@ public class LeftPegAuto extends CommandGroup {
         // arm.
         addSequential(new DriveForward(68));
         this.addSequential(new WaitCommand(0.25));
-        System.out.println("drive done");
         addSequential(new Turn(60), 1);
-        System.out.println("turn done");
         this.addSequential(new WaitCommand(0.25));
 //        addSequential(new DriveForward(0));
         addSequential(new PlaceGear());

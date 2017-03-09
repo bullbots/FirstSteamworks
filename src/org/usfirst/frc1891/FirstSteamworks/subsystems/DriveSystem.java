@@ -97,13 +97,11 @@ public class DriveSystem extends PIDSubsystem {
     
     public void clear()
     {
-    	gyroTarget = 0;
+    	gyroTarget = nav.getAngle();
     	gyroCorrection = 0;
     }
     
     /**
-     * @param x 
-     * @param y 
      * @param angle 
      * 
      */
@@ -115,9 +113,9 @@ public class DriveSystem extends PIDSubsystem {
 
     	SmartDashboard.putNumber("gyro target", gyroTarget);
     	SmartDashboard.putNumber("gyro correction", gyroCorrection);
-    	SmartDashboard.putNumber("yaw rate", nav.getRate());
-    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
-    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
+//    	SmartDashboard.putNumber("yaw rate", nav.getRate());
+//    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
+//    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
     	SmartDashboard.putNumber("gyro", getGyro());
     	
     	double instantGyroCorrection;
@@ -127,7 +125,7 @@ public class DriveSystem extends PIDSubsystem {
     	else {
     		instantGyroCorrection = gyroCorrection;
     	}
-    	System.out.println("gyro correct: " + instantGyroCorrection);
+//    	System.out.println("gyro correct: " + instantGyroCorrection);
     	chassis.mecanumDrive_Cartesian(0, 0, instantGyroCorrection, 0);
 //    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
     }
@@ -157,9 +155,9 @@ public class DriveSystem extends PIDSubsystem {
     	
     	SmartDashboard.putNumber("gyro target", gyroTarget);
     	SmartDashboard.putNumber("gyro correction", gyroCorrection);
-    	SmartDashboard.putNumber("yaw rate", nav.getRate());
-    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
-    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
+//    	SmartDashboard.putNumber("yaw rate", nav.getRate());
+//    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
+//    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
     	
     	useGyro = SmartDashboard.getBoolean("Use Gyro?", true);
     	double gyro = 0;
@@ -168,7 +166,7 @@ public class DriveSystem extends PIDSubsystem {
     		gyro = getGyro();
     		SmartDashboard.putNumber("gyro", getGyro());
     	}
-    	chassis.mecanumDrive_Cartesian(x, y, z*2, gyro);
+    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
 //    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
     }
     
@@ -226,7 +224,7 @@ public class DriveSystem extends PIDSubsystem {
     			drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getZ(),0.6),0.6)),true);
     			break;
     		case 1:
-    			drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getRawAxis(5),0.6),0.6)),true);
+    			drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getRawAxis(5)*2,0.6),0.6)),true);
     			break;
     	}
     }
@@ -655,11 +653,12 @@ public class DriveSystem extends PIDSubsystem {
     
     
     public boolean onTargetPosition() {
-    	System.out.println(frontLeftMotor.getClosedLoopError());
+    	System.out.println("front left error: "+frontLeftMotor.getClosedLoopError());
     	boolean frontLeft = (frontLeftMotor.getClosedLoopError() < allowableErrorPosition) && (frontLeftMotor.getClosedLoopError() > -allowableErrorPosition);
     	boolean rearLeft = (rearLeftMotor.getClosedLoopError() < allowableErrorPosition) && (rearLeftMotor.getClosedLoopError() > -allowableErrorPosition);
     	boolean frontRight = (frontRightMotor.getClosedLoopError() < allowableErrorPosition) && (frontRightMotor.getClosedLoopError() > -allowableErrorPosition);
     	boolean rearRight = (rearRightMotor.getClosedLoopError() < allowableErrorPosition) && (rearRightMotor.getClosedLoopError() > -allowableErrorPosition);
+//    	System.out.println(frontLeft && rearLeft && frontRight && rearRight);
 		return frontLeft && rearLeft && frontRight && rearRight;
     }
     

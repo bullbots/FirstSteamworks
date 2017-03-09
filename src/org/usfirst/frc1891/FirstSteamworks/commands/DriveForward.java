@@ -34,17 +34,19 @@ public class DriveForward extends Command {
     	Robot.driveSystem.zeroPosition();
     	System.out.println("distance: " + m_rotations);
     	Robot.driveSystem.driveForwardPosition(m_rotations);
+    	setTimeout(0.1);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.driveSystem.driveForwardPosition(m_rotations);
-    	Robot.driveSystem.publishDistances();
+//    	Robot.driveSystem.publishDistances();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveSystem.onTargetPosition();
+    	System.out.println("timedout: "+this.isTimedOut());
+        return (Robot.driveSystem.onTargetPosition() && this.isTimedOut());
     }
 
     // Called once after isFinished returns true
