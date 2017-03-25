@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 
@@ -56,11 +57,42 @@ public class DriveSystem extends PIDSubsystem {
     
     private boolean useGyro = true;
     
-    private int turnTimeout;
-    private boolean doneTurning = true;
-    
     private int printCounter;
 	private double allowableErrorPosition = 2500;
+	
+	/**
+	 * @author Edgar Schafer
+	 * The various states the drive system can be in.
+	 */
+	public enum drivePowerState {
+		/**
+		 * Drive state for no damp on motors
+		 */
+		//Falon
+		FULL_SPEED(1),
+		/**
+		 * Drive state for limited damp, used for non full speed activities
+		 */
+		//Marth
+		MEDIUM_SPEED(0.5),
+		/**
+		 * Drive state for slow, precise movement, used for activities such as aligning
+		 */
+		//Bowser
+		SLOW_SPEED(0.3);
+		
+		private final double power;
+
+		drivePowerState(double power) {
+	        this.power = power;
+	    }
+	    
+	    public double getPower() {
+	        return this.power;
+	    }
+	}
+	
+	private drivePowerState driveState;
     
     /**
      * @param p
@@ -78,6 +110,7 @@ public class DriveSystem extends PIDSubsystem {
 		this.getPIDController().setContinuous();
 		setSetpoint(0);
 		enable();
+		driveState = drivePowerState.FULL_SPEED;
 	}
     
     // Put methods for controlling this subsystem
@@ -97,7 +130,7 @@ public class DriveSystem extends PIDSubsystem {
     
     public void clear()
     {
-    	gyroTarget = nav.getAngle();
+    	gyroTarget = getGyro();
     	gyroCorrection = 0;
     }
     
@@ -169,34 +202,39 @@ public class DriveSystem extends PIDSubsystem {
      */
     public void drive(double x, double y, double z, boolean allowGyro) {
     	setVelocityMode();
-    	this.setSetpoint(gyroTarget);
-    	
-    	if (SmartDashboard.getBoolean("Run Wheel PID?", true)) {
-	    	if (z != 0) {
-	    		gyroTarget = getGyro();
+//    	if (DriverStation.getInstance().getBatteryVoltage() < 7.9) {
+//    		stopMotors();
+//    	}
+//    	else {
+	    	this.setSetpoint(gyroTarget);
+	    	
+	    	if (SmartDashboard.getBoolean("Run Wheel PID?", true)) {
+		    	if (z != 0) {
+		    		gyroTarget = getGyro();
+		    	}
+		    	else if (onTarget() ) {
+		    		z = 0;
+		    	}
+		    	else {
+		    		z = gyroCorrection;
+		    	}
 	    	}
-	    	else if (onTarget() ) {
-	    		z = 0;
+	    	
+	    	SmartDashboard.putNumber("gyro target", gyroTarget);
+	    	SmartDashboard.putNumber("gyro correction", gyroCorrection);
+	//    	SmartDashboard.putNumber("yaw rate", nav.getRate());
+	//    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
+	//    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
+	    	
+	    	useGyro = SmartDashboard.getBoolean("Use Gyro?", true);
+	    	double gyro = 0;
+	    	if (useGyro == true && allowGyro)
+	    	{
+	    		gyro = getGyro();
+	    		SmartDashboard.putNumber("gyro", getGyro());
 	    	}
-	    	else {
-	    		z = gyroCorrection;
-	    	}
-    	}
-    	
-    	SmartDashboard.putNumber("gyro target", gyroTarget);
-    	SmartDashboard.putNumber("gyro correction", gyroCorrection);
-//    	SmartDashboard.putNumber("yaw rate", nav.getRate());
-//    	SmartDashboard.putBoolean("is calibrating", nav.isCalibrating());
-//    	SmartDashboard.putBoolean("is rotating", nav.isRotating());
-    	
-    	useGyro = SmartDashboard.getBoolean("Use Gyro?", true);
-    	double gyro = 0;
-    	if (useGyro == true && allowGyro)
-    	{
-    		gyro = getGyro();
-    		SmartDashboard.putNumber("gyro", getGyro());
-    	}
-    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
+	    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
+//    	}
 //    	chassis.mecanumDrive_Cartesian(x, y, z, gyro);
     }
     
@@ -254,7 +292,7 @@ public class DriveSystem extends PIDSubsystem {
     			drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getZ(),0.6),0.6)),true);
     			break;
     		case 1:
-    			drive(deadBand(driverJoy.getX(),0.1),deadBand(driverJoy.getY(),0.1),(indexInput(deadBand(driverJoy.getRawAxis(5)*2,0.6),0.6)),true);
+    			drive(deadBand(driverJoy.getX(),0.1)*driveState.getPower(),deadBand(driverJoy.getY(),0.1)*driveState.getPower(),flattenInput(driverJoy.getRawAxis(5), 0.3, 0.2),true);
     			break;
     	}
     }
@@ -281,6 +319,16 @@ public class DriveSystem extends PIDSubsystem {
     		axisVal = axisVal + index;
     	}
     	return axisVal;
+    }
+    
+	private double flattenInput(double input, double threshold, double targetValue) 
+    {
+    	if (Math.abs(input) < targetValue) {
+    		return 0;
+    	}
+    	else {
+    		return targetValue * (input/Math.abs(input));
+    	}
     }
     
     /**
@@ -392,6 +440,7 @@ public class DriveSystem extends PIDSubsystem {
      */
     public void stopMotors()
     {
+    	setPercentageMode();
     	frontLeftMotor.set(0);
     	rearLeftMotor.set(0);
     	frontRightMotor.set(0);
@@ -728,6 +777,13 @@ public class DriveSystem extends PIDSubsystem {
 //    	System.out.println("Front Right wheel: " + getFrontRightWheelPosition());
 //    	System.out.println("Rear right wheel: " + getRearRightWheelPosition());
 	}
+	
+	public void publishCurrents() {
+		System.out.println("Front Left wheel current: " + frontLeftMotor.getOutputCurrent());
+		System.out.println("Rear Left wheel current: " + rearLeftMotor.getOutputCurrent());
+		System.out.println("Front Right wheel current: " + frontRightMotor.getOutputCurrent());
+		System.out.println("Rear Right wheel current: " + rearRightMotor.getOutputCurrent());
+	}
 
 	@Override
 	protected double returnPIDInput() {
@@ -744,6 +800,15 @@ public class DriveSystem extends PIDSubsystem {
 	 */
 	public double getFrontRangefinderDistance() {
 		return frontSonic.getAverageValue(); //* TODO rangefinder multiplier;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param speed
+	 */
+	public void setSpeed(drivePowerState speed) {
+		this.driveState = speed;
 	}
 }
 

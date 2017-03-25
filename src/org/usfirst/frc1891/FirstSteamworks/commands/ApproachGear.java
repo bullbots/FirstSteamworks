@@ -50,7 +50,7 @@ public class ApproachGear extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveSystem.vectorDrive(0, -0.1);
+    	Robot.driveSystem.vectorDrive(0, -0.2);
     }
 
     // Called once after isFinished returns true

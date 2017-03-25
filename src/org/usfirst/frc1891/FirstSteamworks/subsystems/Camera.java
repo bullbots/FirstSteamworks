@@ -64,6 +64,7 @@ public class Camera extends Subsystem {
      */
     public Camera()
     {
+    	/*
     	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
     	camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     	@SuppressWarnings("unused")
@@ -72,6 +73,7 @@ public class Camera extends Subsystem {
     	
     	visionThread = new VisionThread(camera, pipe, pipeline -> {
 //    		System.out.println("Looking ...."+pipeline.filterContoursOutput().size());
+    		SmartDashboard.putNumber("Vision Target Count", pipeline.filterContoursOutput().size());
             if (pipeline.filterContoursOutput().size() == 2) {
                 SmartDashboard.putBoolean("Target Sighted", true);
                 Rect target1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
@@ -92,6 +94,7 @@ public class Camera extends Subsystem {
             }
         });
         visionThread.start();
+        */
     }
     
     /**

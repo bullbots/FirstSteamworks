@@ -43,7 +43,7 @@ public class LeftPegAuto extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        addSequential(new DriveForward(68));
+        addSequential(new DriveForward(114));
         this.addSequential(new WaitCommand(0.25));
         addSequential(new Turn(60), 1);
         this.addSequential(new WaitCommand(0.25));

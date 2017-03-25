@@ -75,6 +75,8 @@ public class OI {
     
 	public JoystickButton overrideButton;
 	public JoystickButton alignClimberButton;
+	public JoystickButton manualPushGear;
+	
 	public JoystickButton alignLeftRopeButton;
 	public JoystickButton alignLeftPegButton;
 	public JoystickButton alignMiddleButton;
@@ -101,29 +103,46 @@ public class OI {
         
         driveStick = new Joystick(0);
         
+        /*  
+         * Sneaky gamecube button map cheatsheet
+         * 1 - X button or right gray button - align climbing
+         * 2 - A button
+         * 3 - B button
+         * 4 - Y button or right gray button
+         * 5 - Left trigger - medium damp
+         * 6- Right trigger - hard damp
+         * 7 - 
+         * 8 - Z button
+         * 9 - 
+         * 10 - Start button
+         * 13 - up on the d-pad - reset gyro
+         */
+        
         climbButton = new JoystickButton(driveStick, 10);
         climbButton.whenPressed(new Climb());
-        alignClimberButton = new JoystickButton(driveStick, 6);
+        alignClimberButton = new JoystickButton(driveStick, 1);
         alignClimberButton.whenPressed(new AlignClimber());
         gearButton = new JoystickButton(driveStick, 2);
         gearButton.whenPressed(new PlaceGear());
+        manualPushGear = new JoystickButton(driveStick, 8);
+        manualPushGear.whenPressed(new PushGear());
         overrideButton = new JoystickButton(driveStick, 3);
         overrideButton.whenPressed(new OverrideCommands());
-        ZeroGyroButton = new JoystickButton(driveStick, 5);
+        ZeroGyroButton = new JoystickButton(driveStick, 13);
         ZeroGyroButton.whenPressed(new ZeroGyro());
         
         coDriverStick = new Joystick(1);
         
         alignLeftRopeButton = new JoystickButton(coDriverStick, 5);
-        alignLeftRopeButton.whenPressed(new TurnTo(120));
+        alignLeftRopeButton.whenPressed(new TurnTo(-120));
         alignLeftPegButton = new JoystickButton(coDriverStick, 4);
-        alignLeftRopeButton.whenPressed(new TurnTo(60));
+        alignLeftRopeButton.whenPressed(new TurnTo(-60));
         alignMiddleButton = new JoystickButton(coDriverStick, 2);
         alignLeftRopeButton.whenPressed(new TurnTo(0));
         alignRightPegButton = new JoystickButton(coDriverStick, 1);
-        alignLeftRopeButton.whenPressed(new TurnTo(300));
+        alignLeftRopeButton.whenPressed(new TurnTo(-300));
         alignRightRopeButton = new JoystickButton(coDriverStick, 6);
-        alignLeftRopeButton.whenPressed(new TurnTo(240));
+        alignLeftRopeButton.whenPressed(new TurnTo(-240));
 
         // SmartDashboard Buttons
         

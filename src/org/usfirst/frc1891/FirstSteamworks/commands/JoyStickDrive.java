@@ -1,6 +1,7 @@
 package org.usfirst.frc1891.FirstSteamworks.commands;
 
 import org.usfirst.frc1891.FirstSteamworks.Robot;
+import org.usfirst.frc1891.FirstSteamworks.subsystems.DriveSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -24,10 +25,19 @@ public class JoyStickDrive extends Command {
 
 	    // Called repeatedly when this Command is scheduled to run
 	    protected void execute() {
+	    	if (Robot.oi.getDriveStick().getRawButton(6)) {
+	    		Robot.driveSystem.setSpeed(DriveSystem.drivePowerState.SLOW_SPEED);
+	    	}
+	    	else if (Robot.oi.getDriveStick().getRawButton(5)) {
+	    		Robot.driveSystem.setSpeed(DriveSystem.drivePowerState.MEDIUM_SPEED);
+	    	}
+	    	else {
+	    		Robot.driveSystem.setSpeed(DriveSystem.drivePowerState.FULL_SPEED);
+	    	}
 	    	Robot.driveSystem.joyDriveVelocity(Robot.oi.getDriveStick(), Robot.oi.getControllerProfile());
 //	    	System.out.println("joy value" + Robot.oi.getDriveStick().getY());
 //	    	System.out.println(Robot.driveSystem.getFrontRangefinderDistance());
-//	    	Robot.driveSystem.publishSpeeds();
+//	    	Robot.driveSystem.publishCurrents();
 	    }
 
 	    // Make this return true when this Command no longer needs to run execute()

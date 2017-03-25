@@ -37,7 +37,7 @@ public class Climb extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	setTimeout(2);
+    	setTimeout(4);
     	Robot.climber.spinRight(0.9);
     	goingUp = false;
     }
