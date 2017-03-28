@@ -64,7 +64,6 @@ public class Camera extends Subsystem {
      */
     public Camera()
     {
-    	/*
     	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
     	camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     	@SuppressWarnings("unused")
@@ -94,7 +93,6 @@ public class Camera extends Subsystem {
             }
         });
         visionThread.start();
-        */
     }
     
     /**
