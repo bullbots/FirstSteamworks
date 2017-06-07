@@ -58,7 +58,7 @@ public class DriveSystem extends PIDSubsystem {
     private boolean useGyro = true;
     
     private int printCounter;
-	private double allowableErrorPosition = 2500;
+	private double allowableErrorPosition = 1000;
 	
 	/**
 	 * @author Edgar Schafer
@@ -677,16 +677,16 @@ public class DriveSystem extends PIDSubsystem {
     {
     	frontLeftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	frontLeftMotor.setProfile(1);
-    	frontLeftMotor.configPeakOutputVoltage(+6f, -6f);
+    	frontLeftMotor.configPeakOutputVoltage(+4f, -4f);
     	rearLeftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	rearLeftMotor.setProfile(1);
-    	rearLeftMotor.configPeakOutputVoltage(+6f, -6f);
+    	rearLeftMotor.configPeakOutputVoltage(+4f, -4f);
     	frontRightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	frontRightMotor.setProfile(1);
-    	frontRightMotor.configPeakOutputVoltage(+6f, -6f);
+    	frontRightMotor.configPeakOutputVoltage(+4f, -4f);
     	rearRightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     	rearRightMotor.setProfile(1);
-    	rearRightMotor.configPeakOutputVoltage(+6f, -6f);
+    	rearRightMotor.configPeakOutputVoltage(+4f, -4f);
     }
     
     /**
@@ -732,7 +732,7 @@ public class DriveSystem extends PIDSubsystem {
     
     
     public boolean onTargetPosition() {
-    	System.out.println("front left error: "+frontLeftMotor.getClosedLoopError());
+//    	System.out.println("front left error: "+frontLeftMotor.getClosedLoopError());
     	boolean frontLeft = (frontLeftMotor.getClosedLoopError() < allowableErrorPosition) && (frontLeftMotor.getClosedLoopError() > -allowableErrorPosition);
     	boolean rearLeft = (rearLeftMotor.getClosedLoopError() < allowableErrorPosition) && (rearLeftMotor.getClosedLoopError() > -allowableErrorPosition);
     	boolean frontRight = (frontRightMotor.getClosedLoopError() < allowableErrorPosition) && (frontRightMotor.getClosedLoopError() > -allowableErrorPosition);

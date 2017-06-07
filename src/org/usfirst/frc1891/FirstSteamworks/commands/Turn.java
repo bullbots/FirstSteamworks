@@ -19,6 +19,7 @@ import org.usfirst.frc1891.FirstSteamworks.Robot;
 public class Turn extends Command {
 	
 	private double m_angle;
+	private boolean reinitialized = false;
 
 	
     /**
@@ -33,12 +34,17 @@ public class Turn extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveSystem.turn(m_angle);
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//order 66
+    	if (!reinitialized) {
+    		Robot.driveSystem.turn(m_angle);
+    		reinitialized = true;
+    	}
+    	
     	Robot.driveSystem.turn(0);
     }
 
@@ -49,6 +55,7 @@ public class Turn extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	reinitialized = false;
     	System.out.println("turnFinished");
     	Robot.driveSystem.stopMotors();
     }

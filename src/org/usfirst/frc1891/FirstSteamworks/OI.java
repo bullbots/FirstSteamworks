@@ -106,29 +106,29 @@ public class OI {
         /*  
          * Sneaky gamecube button map cheatsheet
          * 1 - X button or right gray button - align climbing
-         * 2 - A button
-         * 3 - B button
+         * 2 - A button - auto place gear
+         * 3 - B button - override
          * 4 - Y button or right gray button
          * 5 - Left trigger - medium damp
          * 6- Right trigger - hard damp
          * 7 - 
          * 8 - Z button
          * 9 - 
-         * 10 - Start button
+         * 10 - Start button - climb
          * 13 - up on the d-pad - reset gyro
          */
         
-        climbButton = new JoystickButton(driveStick, 10);
+        climbButton = new JoystickButton(driveStick, 2);
         climbButton.whenPressed(new Climb());
-        alignClimberButton = new JoystickButton(driveStick, 1);
+        alignClimberButton = new JoystickButton(driveStick, 11);
         alignClimberButton.whenPressed(new AlignClimber());
-        gearButton = new JoystickButton(driveStick, 2);
+        gearButton = new JoystickButton(driveStick, 4);
         gearButton.whenPressed(new PlaceGear());
-        manualPushGear = new JoystickButton(driveStick, 8);
+        manualPushGear = new JoystickButton(driveStick, 1);
         manualPushGear.whenPressed(new PushGear());
         overrideButton = new JoystickButton(driveStick, 3);
         overrideButton.whenPressed(new OverrideCommands());
-        ZeroGyroButton = new JoystickButton(driveStick, 13);
+        ZeroGyroButton = new JoystickButton(driveStick, 12);
         ZeroGyroButton.whenPressed(new ZeroGyro());
         
         coDriverStick = new Joystick(1);

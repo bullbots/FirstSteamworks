@@ -21,7 +21,7 @@ public class MiddlePegAuto extends CommandGroup {
 
     public MiddlePegAuto() {
         
-    	addSequential(new DriveForward(48));
+    	addSequential(new DriveForward(60), 2);
     	addSequential(new PlaceGear());
  
     } 

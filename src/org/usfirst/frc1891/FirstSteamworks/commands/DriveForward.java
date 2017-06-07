@@ -19,6 +19,7 @@ import org.usfirst.frc1891.FirstSteamworks.Robot;
 public class DriveForward extends Command {
 
 	private double m_rotations;
+	private boolean reinitialized = false;
 	
     /**
      * Drives straight forward or backward, without turning or moving sideways
@@ -31,14 +32,19 @@ public class DriveForward extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveSystem.zeroPosition();
-    	System.out.println("distance: " + m_rotations);
-    	Robot.driveSystem.driveForwardPosition(m_rotations);
-    	setTimeout(0.1);
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	if (!reinitialized) {
+    		Robot.driveSystem.zeroPosition();
+        	System.out.println("distance: " + m_rotations);
+        	Robot.driveSystem.driveForwardPosition(m_rotations);
+        	setTimeout(0.1);
+    		reinitialized = true;
+    	}
+    	
     	Robot.driveSystem.driveForwardPosition(m_rotations);
 //    	Robot.driveSystem.publishDistances();
     }
@@ -51,8 +57,10 @@ public class DriveForward extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	reinitialized = false;
     	System.out.println("driveForwardFinished");
     	Robot.driveSystem.setPercentageMode();
+    	Robot.driveSystem.stopMotors();
     	Robot.driveSystem.zeroAngleError();
     	Robot.driveSystem.clear();
     	Robot.driveSystem.zeroPosition();

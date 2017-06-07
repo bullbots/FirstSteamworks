@@ -45,10 +45,17 @@ public class RightPegAuto extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveForward(114));
+//    	addSequential(new DriveForward(114));
+//        this.addSequential(new WaitCommand(0.25));
+//        addSequential(new Turn(-60), 1);
+//        this.addSequential(new WaitCommand(0.25));
+////        addSequential(new DriveForward(0));
+//        addSequential(new PlaceGear());
+        addSequential(new DriveForward(84), 4);
         this.addSequential(new WaitCommand(0.25));
-        addSequential(new Turn(-60), 1);
+        addSequential(new TurnTo(-72), 2);
         this.addSequential(new WaitCommand(0.25));
+        addSequential(new DriveForward(20), 2);
 //        addSequential(new DriveForward(0));
         addSequential(new PlaceGear());
     } 

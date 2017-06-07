@@ -37,26 +37,15 @@ public class Climb extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	setTimeout(4);
+    	setTimeout(6);
     	Robot.climber.spinRight(0.9);
-    	goingUp = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (goingUp) {
-    		Robot.climber.spinRight(0.9);
-    		goingUp = this.isTimedOut();
-    	}
-    	else {
-    		if (this.isTimedOut() && Robot.climber.getLimit()) {
-	    		Robot.climber.spinRight(0);
-	    	}
-	    	else if (!Robot.climber.getLimit()) {
-	    		Robot.climber.spinRight(0.9);
-	    		this.setTimeout(this.timeSinceInitialized() + 0.5);
-	    	}
-    	}
+    	if (this.isTimedOut() && Robot.climber.getLimit()) {
+	    	Robot.climber.spinRight(0);
+	    }
     }
 
     // Make this return true when this Command no longer needs to run execute()
